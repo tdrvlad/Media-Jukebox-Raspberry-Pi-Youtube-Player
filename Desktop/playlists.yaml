@@ -1,0 +1,25 @@
+Retro:
+  button: front_button_1
+  playlists_urls:
+    - https://www.youtube.com/playlist?list=PL6D1A19DA7CA6DAD8
+    - https://www.youtube.com/playlist?list=PL4_Ig7Xjs6hxhMJi1hyKFY5YYMd9IvkHN
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI82dIhYOVbRKEdy_KDSzbjk
+  
+Chill:
+  button: front_button_2
+  playlists_urls:
+    - https://www.youtube.com/watch?v=DKSzY7Dg-rA&t=786s&ab_channel=ChillhopMusic
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI883PB8Qox93gYXHTjEvp_1
+    - https://www.youtube.com/playlist?list=PLeXE5DUbWBqVKwNqJrX9ITPAEW_RC736H
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9xisfBu0_sX0y4cco9T_Yz
+
+Energy:
+  button: front_button_3
+  playlists_urls: 
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI8nvY9cLIJOEReigyrDjJXK
+
+Instrumental:
+  button: front_button_4
+  playlists_urls:
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9khaCizO0uGJTcAs-y9TLY
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI8DQzrthrRVBXDXht0BOnOD
