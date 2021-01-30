@@ -53,6 +53,8 @@ class Playlist:
         self.loaded_media = []
         self.queue = []
 
+        self.last_media_title = None
+
         if name is None:
             self.name = 'Playlist For Button {}'.format(button)
 
@@ -63,36 +65,6 @@ class Playlist:
         if playlist_url in self.urls:
             self.urls.remove(playlist_url)
     
-    '''
-    def create_queue(self):
-
-        if len(self.loaded_media) == 0:
-            self.load_playlist()
-        else:
-            self.queue = self.loaded_media.copy()
-            random.shuffle(self.queue)
-    
-    def get_media(self, rechoose_playlist = True):
-
-        if rechoose_playlist == True:
-            self.load_playlist()
-            self.create_queue()
-        if len(self.queue) <1:
-            self.create_queue()
-        return self.queue.pop()
-
-    def load_playlist(self, entries = None):
-
-        print('{} available playlists.'.format(len(self.playlists_urls)))
-        playlist_url = random.choice(self.playlists_urls)
-        playlist = pafy.get_playlist(playlist_url) 
-        print('Adding playlist {}.'.format(playlist["title"]))
-        self.loaded_media = []
-
-        for media in playlist['items']:
-            self.loaded_media.append(media)         
-    '''
-    
     def get_media(self):
         
         if len(self.urls) == 0:
@@ -100,17 +72,31 @@ class Playlist:
 
         check = False
         tries = 0
-        while check == False and tries < 6:
+        while check == False and tries < 10:
             tries += 1
             playlist_url = random.choice(self.urls)
             print('Chosen playlist URL: {}'.format(playlist_url), flush = True)
 
             try:
                 playlist = pafy.get_playlist(playlist_url) 
-                check = True
                 media = random.choice(playlist['items'])
-                return media
 
+                try:
+                    media_url = media['pafy'].getbestaudio().url
+                    media_title = media['pafy'].title
+
+                    print('Selected media title: {}'.format(media_title))
+
+                    if media_title != self.last_media_title:
+                        check = True
+                        self.last_media_title = media_title
+                        return media_url
+                    else:
+                        print('No same consecutive media. Rechoosing.')
+                except:
+                    media_url = None
+                    print('Error getting media from URL: {}'.format(media_url))
+                
             except:
                 print('Error getting playlist from URL {}'.format(playlist_url))
 
@@ -127,13 +113,8 @@ class Playlist:
 
             while check == False and tries < 3:
                 tries +=1
-                media = self.get_media()
-                print('Chosen media.', flush = True)
-                try:    
-                    media_url = media['pafy'].getbestaudio().url
-                except:
-                    print('Error getting media from URL: {}'.format(media_url))
-
+                media_url = self.get_media()
+    
                 try:
                     Instance = vlc.Instance()
                     Media = Instance.media_new(media_url)
@@ -141,15 +122,13 @@ class Playlist:
                     player.set_media(Media)
                     print('Playing.', flush = True)
                     player.play()
-
                     check = True
+                    sleep(2) 
                 except:
                     print('Error playing media on vlc module.')
 
-                sleep(2) 
-
                 stop = False
-                while stop == False and player.is_playing():
+                while stop == False and check == True and player.is_playing():
                     
                     check_button = self.manager.check_buttons()
                     if check_button == True:
@@ -157,7 +136,6 @@ class Playlist:
                         player.stop()
                         time.sleep(1)
                     time.sleep(0.3)
-
 
 
 class PlaylistManager:
