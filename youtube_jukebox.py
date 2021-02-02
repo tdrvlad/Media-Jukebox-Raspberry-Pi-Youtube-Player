@@ -5,7 +5,7 @@ import threading
 import random
 import RPi.GPIO as GPIO
 import yaml, os
-from peripherals import LED
+from peripherals import LED, check_button_press
 
 rel_path = os.path.relpath(os.path.dirname(os.path.realpath(__file__)), os.getcwd()) 
 gpio_wiring_file = os.path.join(rel_path, 'gpio_wiring.yaml')
@@ -18,23 +18,6 @@ with open(gpio_wiring_file) as data_file:
     gpio_map = yaml.load(data_file, Loader=yaml.FullLoader)
 
 GPIO.setmode(GPIO.BCM)
-
-class LED:
-    def __init__(self):
-        self.pin = gpio_map.get('led')
-        if self.pin is None:
-            print('No wiring found for led.')
-        GPIO.setup(gpio_map.get('led'), GPIO.OUT)
-        GPIO.output(gpio_map.get('led'), GPIO.LOW)
-
-    def signal(self):
-        GPIO.output(gpio_map.get('led'), GPIO.HIGH)
-        time.sleep(0.2)
-        GPIO.output(gpio_map.get('led'), GPIO.LOW)
-        time.sleep(0.1)
-        GPIO.output(gpio_map.get('led'), GPIO.HIGH)
-        time.sleep(0.2)
-        GPIO.output(gpio_map.get('led'), GPIO.LOW)
 
 led = LED()
 
@@ -111,7 +94,7 @@ class Playlist:
             check = False
             tries = 0
 
-            while check == False and tries < 3:
+            while check == False and tries < 5:
                 tries +=1
                 media_url = self.get_media()
     
@@ -136,7 +119,7 @@ class Playlist:
                         player.stop()
                         time.sleep(1)
                     time.sleep(0.3)
-
+            
 
 class PlaylistManager:
 
@@ -166,34 +149,10 @@ class PlaylistManager:
         for playlist in self.playlists:
             playlist.selected = False
 
-
-    def check_button_press(self, pin):
-        if pin is None:
-            return 0
-        pos = GPIO.input(pin)
-        if pos == GPIO.LOW:
-            print('Button wired to GPIO{} pressed.'.format(pin))
-            start_timestamp = time.time()
-            signalled = False
-            while pos == GPIO.LOW:
-                if time.time() - start_timestamp > 0.2 and signalled == False:
-                    led.signal()
-                    signalled = True
-                if time.time() - start_timestamp > 3:
-                    led.signal()
-                    break
-                time.sleep(0.1)
-                pos = GPIO.input(pin)
-            elapsed_time = time.time() - start_timestamp
-            print('Elapsed time: {:.1f}s'.format(elapsed_time))
-            return elapsed_time
-        return 0
-
-
     def check_buttons(self):
 
         for playlist in self.playlists:
-            pressed_time = self.check_button_press(playlist.button_pin)
+            pressed_time = check_button_press(playlist.button_pin, led)
             if pressed_time > 0.2:
                 self.deselect_all()
                 if pressed_time < 2:
