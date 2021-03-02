@@ -24,6 +24,7 @@ class Theme:
     '''
     Theme contains multiple Youtube Playlists URLs.
     At startup, all the video URLs in the Theme Playlists are added into a Media Pool and then randomly selected.
+    A Theme has a button from the pannel associated with.
     '''
 
     def __init__(self, manager, button, name = None):
@@ -38,6 +39,8 @@ class Theme:
         self.playlist_urls = []
         self.media_pool_urls = None
         self.queue = []
+
+        self.player = self.manager.player
 
         '''
         last_played assures that the random selection does not repeat itself.
@@ -84,23 +87,29 @@ class Theme:
         if len(self.last_played) > self.last_played_dim:
             self.last_played.pop(0)
 
-        possible_urls = [i for i in self.media_pool_urls if i not in self.last_played]
-        chosen_url = random.choice(possible_urls)
+        tries = 0
+        while tries < 10:
+            
+            tries +=1
+            possible_urls = [i for i in self.media_pool_urls if i not in self.last_played]
+            chosen_url = random.choice(possible_urls)
 
-        self.last_played.append(chosen_url)
-        print('Chosen media URL: {}'.format(chosen_url), flush = True)
+            self.last_played.append(chosen_url)
+            print('Chosen media URL: {}'.format(chosen_url), flush = True)
 
-        media = pafy.new(chosen_url)
-        playable_url = media.getbest().url
-
-        return playable_url
+            try:
+                media = pafy.new(chosen_url)
+                playable_url = media.getbestaudio().url
+                return playable_url
+            except:
+                print('Error getting {}. Removing.'.format(chosen_url))
+                self.media_pool_urls.remove(chosen_url)
 
 
     def play(self):
-
+        
         while self.selected == True:
-            player = vlc.Instance().media_player_new()
-
+            
             check = False
             tries = 0
 
@@ -112,39 +121,42 @@ class Theme:
                     Instance = vlc.Instance()
                     Media = Instance.media_new(media_url)
                     Media.get_mrl()
-                    player.set_media(Media)
+                    self.player.set_media(Media)
                     print('Playing.', flush = True)
-                    time.sleep(1)
-                    player.play()
+                    time.sleep(0.1)
+                    self.player.play()
                     check = True
                     sleep(2) 
                 except:
                     print('Error playing media on vlc module.')
 
                 stop = False
-                while stop == False and check == True and player.is_playing():
-                    
+                while stop == False and check == True and self.player.is_playing():
                     check_button = self.manager.check_buttons()
                     if check_button == True:
                         stop = True
-                        player.stop()
-                        time.sleep(1)
-                    time.sleep(0.3)
+                        self.player.stop()
             
 
 class ThemeManager:
+    '''
+    Loads all the defined Themes and watches if any button is pressed.
+    '''
 
     def __init__(self):
         self.themes = []
+        self.player = vlc.MediaPlayer() 
+
 
     def check_button_already_used(self,button):
         pin = gpio_map.get(button)
         if pin is None:
             print('Button not defined in GPIO wiring.')
-        for playlist in self.themes:
+        for theme in self.themes:
             if theme.button_pin == pin:
                 return theme
     
+
     def add_theme(self, button, name = None):
 
         theme = Theme(self, button, name)
@@ -156,9 +168,11 @@ class ThemeManager:
 
         return theme
     
+
     def deselect_all(self):
         for theme in self.themes:
             theme.selected = False
+
 
     def check_buttons(self):
 
@@ -170,6 +184,7 @@ class ThemeManager:
                     theme.selected = True
                 return True
         return False
+
 
     def run(self):
 
@@ -187,7 +202,6 @@ if __name__ =='__main__':
         themes = yaml.load(data_file, Loader=yaml.FullLoader)
 
     manager = ThemeManager()
-
     GPIO.setup(gpio_map.get('led'), GPIO.OUT)
         
     for theme_name, values in themes.items():
@@ -196,8 +210,7 @@ if __name__ =='__main__':
 
         theme = manager.add_theme(
             button = button,
-            name = theme_name
-        )
+            name = theme_name)
 
         playlists_urls = values.get('playlists_urls')
         for playlist_url in playlists_urls:
@@ -205,12 +218,6 @@ if __name__ =='__main__':
         
         theme.load_media()
 	
-
-    '''
-    manager.themes[0].selected = True
-    manager.themes[0].play()
-    '''
-    
     manager.run()
 
 
