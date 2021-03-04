@@ -19,6 +19,7 @@ with open(gpio_wiring_file) as data_file:
 GPIO.setmode(GPIO.BCM)
 
 led = LED()
+led.signal()
 
 class Theme:
     '''

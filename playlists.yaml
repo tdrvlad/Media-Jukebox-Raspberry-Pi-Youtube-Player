@@ -5,22 +5,33 @@ Retro:
     - https://www.youtube.com/playlist?list=PL4_Ig7Xjs6hxhMJi1hyKFY5YYMd9IvkHN
     - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI82dIhYOVbRKEdy_KDSzbjk
   
-Chill:
+70s:
   button: front_button_2
   playlists_urls:
-    - https://www.youtube.com/watch?v=DKSzY7Dg-rA&t=786s&ab_channel=ChillhopMusic
-    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI883PB8Qox93gYXHTjEvp_1
     - https://www.youtube.com/playlist?list=PLeXE5DUbWBqVKwNqJrX9ITPAEW_RC736H
-    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9xisfBu0_sX0y4cco9T_Yz
 
-Energy:
+Power:
   button: front_button_3
   playlists_urls: 
     - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI8nvY9cLIJOEReigyrDjJXK
     - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9aEEmACi6IgasTc-uCVyeD
 
-Instrumental:
+Bar:
   button: front_button_4
+  playlists_urls:
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9aEEmACi6IgasTc-uCVyeD
+
+Classic:
+  button: front_button_5
   playlists_urls:
     - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9khaCizO0uGJTcAs-y9TLY
     - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI8DQzrthrRVBXDXht0BOnOD
+    - https://www.youtube.com/playlist?list=PLUyrqiNADJv3kj_16D1639DsOOhPxiVEv
+    - https://www.youtube.com/playlist?list=PLA41852E5643378AD
+    
+Chill:
+  button: front_button_6
+  playlists_urls:
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI883PB8Qox93gYXHTjEvp_1
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9xisfBu0_sX0y4cco9T_Yz
+

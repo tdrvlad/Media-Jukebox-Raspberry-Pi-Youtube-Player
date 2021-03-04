@@ -41,13 +41,13 @@ def check_button_press(pin, led):
         start_timestamp = time.time()
         signalled = False
         while pos == GPIO.LOW:
-            if time.time() - start_timestamp > 0.2 and signalled == False:
+            if time.time() - start_timestamp > 0.05 and signalled == False:
                 led.signal()
                 signalled = True
             if time.time() - start_timestamp > 3:
                 led.signal()
                 break
-            time.sleep(0.1)
+            time.sleep(0.05)
             pos = GPIO.input(pin)
         elapsed_time = time.time() - start_timestamp
         print('Elapsed time: {:.1f}s'.format(elapsed_time))
@@ -56,7 +56,6 @@ def check_button_press(pin, led):
 
 
 if __name__ == '__main__':
-    led = LED()
 
     button_pin = gpio_map.get('shutdown_button')
     fan_pin = gpio_map.get('fan')
@@ -65,8 +64,7 @@ if __name__ == '__main__':
     GPIO.setup(fan_pin, GPIO.OUT)
     GPIO.output(fan_pin, GPIO.LOW)
 
-    led.signal()
-
+    
     def shutdown(channel):
         pressed_time = check_button_press(button_pin, led = LED())
         if pressed_time > 2.5:
@@ -76,4 +74,4 @@ if __name__ == '__main__':
                           callback=shutdown, bouncetime=2000)
 
     while True:
-        time.sleep(0.1)
+        time.sleep(0.01)
