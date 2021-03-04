@@ -1,6 +1,8 @@
 # Media-Jukebox
-A Raspberry Pi wired to buttons providing custom functionality for playing media. 
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
+
+<p align="center">
+  <img width="360"src="documentation_images/presentation_photo.png">
+</p>
 
 ## Project Overview
 
