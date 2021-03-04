@@ -1,7 +1,7 @@
 # Media-Jukebox
 
 <p align="center">
-  <img width="360"src="documentation_images/presentation_photo.png">
+  <img width="360"src="documentation_images/post_photo.png">
 </p>
 
 ## Project Overview
