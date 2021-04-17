@@ -6,7 +6,7 @@ import threading
 import random
 import RPi.GPIO as GPIO
 import yaml, os
-from peripherals import LED, check_button_press
+from peripherals import LED, check_button_press, setup_input
 
 rel_path = os.path.relpath(os.path.dirname(os.path.realpath(__file__)), os.getcwd()) 
 gpio_wiring_file = os.path.join(rel_path, 'gpio_wiring.yaml')
@@ -19,7 +19,6 @@ with open(gpio_wiring_file) as data_file:
 GPIO.setmode(GPIO.BCM)
 
 led = LED()
-led.signal()
 
 class Theme:
     '''
@@ -51,7 +50,8 @@ class Theme:
 
         if name is None:
             self.name = 'Theme For Button {}'.format(button)
-
+        else:
+            self.name = name
 
     def add_url(self, playlist_url):
         self.playlist_urls.append(playlist_url)
@@ -111,6 +111,8 @@ class Theme:
         
         while self.selected == True:
             
+            print('Selected Theme {}'.format(self.name))
+
             check = False
             tries = 0
 
@@ -164,7 +166,7 @@ class ThemeManager:
         existent_theme = self.check_button_already_used(button)
         if not existent_theme is None:
             self.themes.remove(existent_theme)
-        GPIO.setup(theme.button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        setup_input(theme.button_pin)
         self.themes.append(theme)
 
         return theme
@@ -198,7 +200,12 @@ class ThemeManager:
 
 
 if __name__ =='__main__':
+    
+    led.signal()
+    led.turn_on()
+    time.sleep(15)
 
+    
     with open(themes_file) as data_file:
         themes = yaml.load(data_file, Loader=yaml.FullLoader)
 
@@ -218,7 +225,11 @@ if __name__ =='__main__':
             theme.add_url(playlist_url)
         
         theme.load_media()
-	
+        
+    led.turn_off()
+    led.signal()
+    
+    print('Finished loading music.')
     manager.run()
 
 
