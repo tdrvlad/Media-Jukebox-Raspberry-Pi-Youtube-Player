@@ -38,61 +38,79 @@ class LED:
         GPIO.output(gpio_map.get('led'), GPIO.LOW)
 
 
-def setup_input(pin, pull_up = True):
+def setup_input(gpio, pull_up = False):
 
-    if isinstance(pin, int):
+    def setup_pin(pin):
+        if pin < 0:
+            pin *= -1
+        print('Setting up pin {} as input (pull_up = {})'.format(pin, pull_up))
         if pull_up:
             GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         else:
-            pass
+            GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+    if isinstance(gpio, int):
+        setup_pin(gpio)
     
-    if isinstance(pin,list):
-        for individual_pin in pin:
-            if individual_pin > 0:
-                if pull_up:
-                    GPIO.setup(individual_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-                else:
-                    pass
+    if isinstance(gpio, list):
+        for pin in gpio:
+            setup_pin(pin)
 
 
-def pressed(pin, pull_up = False):
+def pressed(gpio, pull_up = False):
 
-    if isinstance(pin, int):
-        pos = GPIO.input(pin)
+    if isinstance(gpio, int):
+
+        pos = GPIO.input(gpio)
         if pos == GPIO.HIGH:
-            pressed = True
+            condition = True
         else:
-            pressed = False
+            condition = False
         if pull_up:
-            pressed = not pressed
-        return pressed
+            condition = not condition
+        return condition
 
-    if isinstance(pin, list):
-        pressed = True
-        for individual_pin in pin:
-            if individual_pin > 0:
-                pos = GPIO.input(individual_pin)
-                if pos == GPIO.LOW and not pull_up:
-                    pressed = False
-                if pos == GPIO.HIGH and pull_up:
-                    pressed = False
-            if individual_pin < 0:
-                pos = GPIO.input(-individual_pin)
-                if pos == GPIO.HIGH and not pull_up:
-                    pressed = False
-                if pos == GPIO.LOW and pull_up:
-                    pressed = False
-        return pressed
+    if isinstance(gpio, list):
+        condition = True
+
+        for pin in gpio:
+            if pin > 0:
+                'Pins numbered with positive values have to be pressed.'
+                pos = GPIO.input(pin)
+                
+                if pull_up:
+                    'Pull-up buttons are pressed when value is LOW'
+                    if pos == GPIO.HIGH:
+                        condition = False          
+                else:
+                    'Pull-down buttons are pressed when value is HIGH'   
+                    if pos == GPIO.LOW:
+                        condition = False
+
+            else:
+                'Pins numbered with negative values have to NOT be pressed.'
+                pos = GPIO.input(-pin)
+                
+                if pull_up:
+                    'Pull-up buttons are pressed when value is LOW'
+                    if pos == GPIO.LOW:
+                        condition = False
+                else:
+                    'Pull-down buttons are pressed when value is HIGH'   
+                    if pos == GPIO.HIGH:
+                        condition = False
+        
+        return condition
 
 
-def check_button_press(pin, led, pull_up = False):
-    if pin is None:
+def check_button_press(gpio, led, pull_up = False):
+    if gpio is None:
         return 0
-    if pressed(pin, pull_up = pull_up):
-        print('Button wired to GPIO{} pressed.'.format(pin))
+    if pressed(gpio, pull_up = pull_up):
+        print('Button wired to GPIO{} pressed.'.format(gpio))
         start_timestamp = time.time()
         signalled = False
-        while pressed(pin, pull_up = pull_up):
+        while pressed(gpio, pull_up = pull_up):
             if time.time() - start_timestamp > 0.05 and signalled == False:
                 led.signal()
                 signalled = True
@@ -106,6 +124,25 @@ def check_button_press(pin, led, pull_up = False):
     return 0
 
 
+def test_wiring(gpio):
+
+    if isinstance(gpio, int):
+        while True:
+            print(pressed(gpio))
+            time.sleep(0.5)
+
+    if isinstance(gpio, list):
+        while True:
+            print('\n')
+            for pin in gpio:
+                print(pressed(pin))
+            time.sleep(0.5)
+
+def test_press(gpio):
+
+    while True:
+        print(pressed(gpio))
+        time.sleep(.5)
 if __name__ == '__main__':
 
     led = LED()
@@ -121,7 +158,10 @@ if __name__ == '__main__':
     GPIO.add_event_detect(button_pin, GPIO.RISING,
                           callback=shutdown, bouncetime=2000)
     '''
+
     while True:
         pressed_time = check_button_press(button_pin, led = led, pull_up = True)
         if pressed_time > 2.5:
+            print('Shutdown')
             os.system('shutdown now')
+            

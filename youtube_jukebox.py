@@ -166,6 +166,7 @@ class ThemeManager:
         existent_theme = self.check_button_already_used(button)
         if not existent_theme is None:
             self.themes.remove(existent_theme)
+        print('Wiring: {}'.format(theme.button_pin))
         setup_input(theme.button_pin)
         self.themes.append(theme)
 
@@ -213,9 +214,9 @@ if __name__ =='__main__':
     GPIO.setup(gpio_map.get('led'), GPIO.OUT)
         
     for theme_name, values in themes.items():
-        print('Adding theme {}.'.format(theme_name))
         button = values.get('button')
 
+        print('Adding theme {} at button: {}.'.format(theme_name, button))
         theme = manager.add_theme(
             button = button,
             name = theme_name)
