@@ -1,37 +1,60 @@
 Retro:
-  button: front_button_1
+  button: front_button_9
   playlists_urls:
     - https://www.youtube.com/playlist?list=PL6D1A19DA7CA6DAD8
-    - https://www.youtube.com/playlist?list=PL4_Ig7Xjs6hxhMJi1hyKFY5YYMd9IvkHN
     - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI82dIhYOVbRKEdy_KDSzbjk
-  
-70s:
-  button: front_button_2
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9VjR4ReEy76Nu92dZrfQuJ
+    - https://www.youtube.com/playlist?list=PL3151990899D5BF3C
+Boogie:
+  button: front_button_8
   playlists_urls:
-    - https://www.youtube.com/playlist?list=PLeXE5DUbWBqVKwNqJrX9ITPAEW_RC736H
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9QvMLVwl8KzhZt23TAbSdp
 
 Power:
-  button: front_button_3
+  button: front_button_4
   playlists_urls: 
     - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI8nvY9cLIJOEReigyrDjJXK
     - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9aEEmACi6IgasTc-uCVyeD
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI-5qST286J14EyAx07syveS
+    - https://www.youtube.com/playlist?list=PLljN1jcw5WOtYK_wqnGAgS1UQJOW0b-Fe
 
 Bar:
-  button: front_button_4
+  button: front_button_2
   playlists_urls:
-    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9aEEmACi6IgasTc-uCVyeD
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI90XlsFHwD5caIm9kem1R5S
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9fAOT7ro8WYcYz47QL4aGp
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9fAOT7ro8WYcYz47QL4aGp
 
 Classic:
-  button: front_button_5
+  button: front_button_1
   playlists_urls:
     - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9khaCizO0uGJTcAs-y9TLY
     - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI8DQzrthrRVBXDXht0BOnOD
     - https://www.youtube.com/playlist?list=PLUyrqiNADJv3kj_16D1639DsOOhPxiVEv
     - https://www.youtube.com/playlist?list=PLA41852E5643378AD
+  
     
-Chill:
+ClassicRock:
+  button: front_button_5
+  playlists_urls:
+    - https://www.youtube.com/playlist?list=PLeXE5DUbWBqVKwNqJrX9ITPAEW_RC736H
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI_w0NV5DfL3qxOzBkZqG0UV
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI8Erpmn9LRd4Juh4A-pnTiF
+
+Smooth:
+  button: front_button_3
+  playlists_urls:
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI-qDKxN5NbU518UlTrdZ4VH
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI8BfxeoYoN6Juf3qPK46uVD
+    - https://www.youtube.com/playlist?list=PLljN1jcw5WOsvF3P89ariTPmwphAp-eXH
+
+Rakija:
   button: front_button_6
   playlists_urls:
-    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI883PB8Qox93gYXHTjEvp_1
-    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI9xisfBu0_sX0y4cco9T_Yz
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI-TVgJUkgoLkXDWKfQElU_A
+
+Coffe:
+  button: front_button_7
+  playlists_urls:
+    - https://www.youtube.com/playlist?list=PLqJ3ytjVLjI-6RfWSHCFevg-U0awc4dlh
 
