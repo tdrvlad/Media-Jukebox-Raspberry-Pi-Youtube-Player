@@ -150,9 +150,10 @@ if __name__ == '__main__':
     button_pin = gpio_map.get('shutdown_button')
     fan_pin = gpio_map.get('fan')
 
+    print(fan_pin)
     GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(fan_pin, GPIO.OUT)
-    GPIO.output(fan_pin, GPIO.LOW)
+    GPIO.output(fan_pin, GPIO.HIGH)
 
     '''
     GPIO.add_event_detect(button_pin, GPIO.RISING,

@@ -18,6 +18,7 @@ with open(gpio_wiring_file) as data_file:
 
 GPIO.setmode(GPIO.BCM)
 
+PULL_UP = True
 led = LED()
 
 class Theme:
@@ -167,7 +168,7 @@ class ThemeManager:
         if not existent_theme is None:
             self.themes.remove(existent_theme)
         print('Wiring: {}'.format(theme.button_pin))
-        setup_input(theme.button_pin)
+        setup_input(theme.button_pin, pull_up = PULL_UP)
         self.themes.append(theme)
 
         return theme
@@ -181,7 +182,7 @@ class ThemeManager:
     def check_buttons(self):
 
         for theme in self.themes:
-            pressed_time = check_button_press(theme.button_pin, led)
+            pressed_time = check_button_press(theme.button_pin, led, pull_up = PULL_UP)
             if pressed_time > 0.2:
                 self.deselect_all()
                 if pressed_time < 2:

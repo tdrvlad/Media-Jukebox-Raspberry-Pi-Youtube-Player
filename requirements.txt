@@ -1,0 +1,5 @@
+PyYAML
+python-vlc
+pafy
+youtube_dl
+pytube
